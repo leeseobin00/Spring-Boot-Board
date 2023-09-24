@@ -10,6 +10,7 @@ import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 class SbbApplicationTests {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+//    @Autowired
+//    private QuestionRepository questionRepository;
+
+//    @Autowired
+//    private AnswerRepository answerRepository;
 
     @Autowired
-    private AnswerRepository answerRepository;
+    private QuestionService questionService;
 
     @Transactional
     @Test
@@ -102,13 +106,20 @@ class SbbApplicationTests {
         assertEquals(2, a.getQuestion().getId());*/
 
         // 답변에 연결된 질문 찾기 vs 질문에 달린 답변 찾기
-        Optional<Question> oq = this.questionRepository.findById(2);
+        /*Optional<Question> oq = this.questionRepository.findById(2);
         assertTrue(oq.isPresent());
         Question q = oq.get();
 
         List<Answer> answerList = q.getAnswerList();
 
         assertEquals(1, answerList.size());
-        assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+        assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());*/
+
+        // 대량 테스트 데이터 만들기
+        for (int i = 1; i <= 300; i++) {
+            String subject = String.format("테스트 데이터입니다: [%03d]", i);
+            String content = "내용무";
+            this.questionService.create(subject, content);
+        }
     }
 }
